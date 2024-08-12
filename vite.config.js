@@ -47,9 +47,7 @@ export default defineConfig(({ _, mode }) => {
           'pinia',
           '@vueuse/core',
           {
-            '@antv/g6': [
-              ['default', 'G6'], // import G6  from "@antv/g6";
-            ],
+            '@antv/g6': ['Graph', 'treeToGraphData', 'register', 'ExtensionCategory', 'iconfont', 'NodeEvent', 'CanvasEvent'],
           },
         ],
         dts: 'src/types/auto-imports.d.ts', // 方案二:生成自动导入的auto-imports.d.ts声明文件, 解决 '找不到名称“Elxxx”' 报错

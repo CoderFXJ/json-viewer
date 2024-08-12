@@ -1,43 +1,92 @@
-// 生成随机id
-function generateRandomId(count = 8): string {
+// 生成随机 id
+function randomId(count = 8) {
   return Math.random()
     .toString(36)
     .substring(2, 2 + count)
 }
+
+function isObject(value) {
+  return Object.prototype.toString.call(value) === '[object Object]'
+}
+
+function isArray(value) {
+  return Array.isArray(value)
+}
+function hasOwnProperty(target, key) {
+  return Object.prototype.hasOwnProperty.call(target, key)
+}
 // 处理数据结构
-export function dealDataToTree(data) {
-  const result = {
-    id: '',
-    children: [
-      {
-        id: '',
-        keyName: '',
-        entries: {},
-        children: [],
-      },
-    ],
+export function dealDataToTree(data, keyName = '') {
+  const node = {
+    id: randomId(),
+    keyName: keyName || undefined,
+    entries: {},
+    children: [],
   }
-  for (const key in data) {
-    const value = data[key]
-    if (typeof value === 'object' && value !== null) {
-      if (Object.keys(value).length) {
-        const len = result.children.length
-        result.children[len] = {
-          ...dealDataToTree(value),
-          id: generateRandomId(),
-          keyName: key,
-        } as any
+
+  if (isObject(data)) {
+    for (const key in data) {
+      if (hasOwnProperty(data, key)) {
+        const value = data[key]
+
+        if (isObject(value)) {
+          const childNode = {
+            id: randomId(),
+            keyName: key,
+            entries: {},
+            children: [],
+          }
+
+          const grandChildNode = {
+            id: randomId(),
+            entries: {},
+            children: [],
+          }
+
+          for (const subKey in value) {
+            if (hasOwnProperty(value, subKey)) {
+              const subValue = value[subKey]
+              if (!isObject(subValue) && !isArray(subValue)) {
+                grandChildNode.entries[subKey] = subValue
+              }
+              else {
+                grandChildNode.children.push(dealDataToTree(subValue, subKey))
+              }
+            }
+          }
+
+          childNode.children.push(grandChildNode)
+          node.children.push(childNode)
+        }
+        else if (isArray(value)) {
+          const arrayNode = {
+            id: randomId(),
+            keyName: key,
+            entries: {},
+            children: value.map(item => ({
+              id: randomId(),
+              keyName: item,
+              entries: {},
+              children: [],
+            })),
+          }
+
+          node.children.push(arrayNode)
+        }
+        else {
+          node.entries[key] = value
+        }
       }
     }
-    else {
-      const level1 = result.children[0]
-      if (!level1.id)
-        level1.id = generateRandomId()
-
-      level1.entries[key] = value
-    }
   }
-  // 去除id不存在的元素
-  result.children = result.children.filter(item => item.id)
-  return result
+  else if (isArray(data)) {
+    node.children = data.map(item => ({
+      id: randomId(),
+      keyName: item,
+      entries: {},
+      children: [],
+    }))
+  }
+
+  return node
 }

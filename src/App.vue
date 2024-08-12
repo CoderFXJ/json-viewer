@@ -9,7 +9,6 @@ const ExportImage = defineAsyncComponent(() => import('@/components/async/Export
 const FieldsCustom = defineAsyncComponent(() => import('@/components/async/FieldsCustom.vue'))
 const NodeDialog = defineAsyncComponent(() => import('@/components/async/NodeDialog.vue'))
 const LayoutCustom = defineAsyncComponent(() => import('@/components/async/LayoutCustom.vue'))
-
 const { originCode, formatCode, json, jsonValid } = toRefs(useCodeStore())
 const { isDark, paneSize, autoRender, isExpandEditor } = toRefs(
   useGlobalStore(),
@@ -24,16 +23,14 @@ const ratioText = computed(() => {
   return `${(ratio.value * 100).toFixed(2)}%`
 })
 const isMobile = useMobile()
-// 节点展开/收起
 const [isExpandNode, toggleNode] = useToggle(true)
+
 const editorIconStyle = computed(() => {
-  if (isMobile.value) {
-    return {
-      transform: `rotate(${isExpandEditor.value ? '90deg' : '270deg'})`,
-    }
-  }
-  else {
-    return { transform: `rotate(${isExpandEditor.value ? '0deg' : '180deg'})` }
+  const transform = isMobile.value
+    ? `rotate(${isExpandEditor.value ? '90deg' : '270deg'})`
+    : `rotate(${isExpandEditor.value ? '0deg' : '180deg'})`
+  return {
+    transform,
   }
 })
 function onUpdateCode(codeStr: string) {
@@ -80,14 +77,6 @@ function onRender() {
 }
 function showExportImage() {
   exportVisible.value = true
-}
-function confirmExport(config: any) {
-  exportVisible.value = false
-  const { name, type, padding, backgroundColor } = config
-  jsonCanvasRef?.value?.graph?.downloadFullImage(name, type, {
-    padding,
-    backgroundColor,
-  })
 }
 function onZoomOut() {
   if (jsonCanvasRef?.value) {
@@ -317,7 +306,7 @@ const canvasIconList = [
         </div>
       </Pane>
     </Splitpanes>
-    <ExportImage v-if="exportVisible" v-model="exportVisible" @confirm="confirmExport" />
+    <ExportImage v-if="exportVisible" v-model="exportVisible" @confirm="({ name, type }) => jsonCanvasRef?.saveImage(name, type)" />
     <FieldsCustom v-if="fieldsVisible" v-model="fieldsVisible" />
     <NodeDialog v-if="nodeDetailVisible" v-model="nodeDetailVisible" :node-detail="nodeDetail" />
     <LayoutCustom v-if="drawerVisible" v-model="drawerVisible" />

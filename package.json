@@ -15,7 +15,8 @@
     "release": "bumpp"
   },
   "dependencies": {
-    "@antv/g6": "^4.8.24",
+    "@antv/g": "^6.0.12",
+    "@antv/g6": "^5.0.14",
     "@codemirror/lang-json": "^6.0.1",
     "@codemirror/theme-one-dark": "^6.1.2",
     "@vueuse/core": "^10.11.1",

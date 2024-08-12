@@ -1,4 +1,4 @@
-import { updateStylle } from './registerNodes'
+// import { updateStylle } from '../register/node'
 // 注册行为
 export function registerBehaviors(graph, nodeClickCb: (node: any) => void) {
   const handleCollapse = (e) => {
@@ -10,7 +10,7 @@ export function registerBehaviors(graph, nodeClickCb: (node: any) => void) {
     nodeModel.collapsed = !nodeModel.collapsed
     graph?.layout()
     graph?.setItemState(item, 'collapse', nodeModel.collapsed)
-    updateStylle(graph)
+    // updateStylle(graph)
   }
   // 打印画布可以监听的事件
   const handleNodeMouseEnter = (e) => {

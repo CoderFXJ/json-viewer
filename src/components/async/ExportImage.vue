@@ -2,35 +2,29 @@
 import { useDialogWidth } from '@/hooks'
 
 const emit = defineEmits<{
-  // confirm: [val: ImageConfig]
-  (event: 'confirm', val: ImageConfig): void
+  confirm: [config: ImageConfig]
 }>()
-const isDark = useDark()
+// const isDark = useDark()
 interface ImageConfig {
   name: string
   type: string
-  padding: number
-  backgroundColor: string
 }
 const width = useDialogWidth()
 const visible = defineModel<boolean>()
 const imageTypes = reactive({
   PNG: 'image/png',
   JPEG: 'image/jpeg',
-  WEBP: 'image/webp',
-  BMP: 'image/bmp',
 })
-const exportConfig = ref<ImageConfig> ({
+const exportConfig = ref({
   name: 'json-viewer',
   type: 'image/png',
-  padding: 20,
   backgroundColor: '#fff',
 })
 
 function confirm() {
+  visible.value = false
   emit('confirm', {
     ...exportConfig.value,
-    backgroundColor: isDark.value ? '#000' : '#fff',
   })
   visible.value = false
 }

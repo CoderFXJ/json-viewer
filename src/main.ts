@@ -6,6 +6,7 @@ import './main.scss'
 
 // Tailwind 紧凑型样式重置
 import 'virtual:uno.css'
+import './assets/iconfont/iconfont.css'
 import '@unocss/reset/tailwind-compat.css'
 import 'splitpanes/dist/splitpanes.css'
 // 引入pinia

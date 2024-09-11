@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/json-viewer/sw.js', { scope: '/json-viewer/' })})}

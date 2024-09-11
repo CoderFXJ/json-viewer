@@ -1,0 +1,1 @@
+import{c as t}from"../entries/index-D56qka-4.js";import{ag as u,h as i}from"./vendor-Djejl632.js";function n(o=400){const s=t(),{width:e}=u();return i(()=>s.value&&e.value<o?e.value:o)}export{n as u};
